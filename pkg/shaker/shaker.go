@@ -2,8 +2,8 @@ package shaker
 
 import (
 	"errors"
-	"github.com/foxdalas/shaker/pkg/shaker_const"
 	"github.com/fsnotify/fsnotify"
+	"github.com/onetwotrip/shaker/pkg/shaker_const"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"sync"
