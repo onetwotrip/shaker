@@ -86,7 +86,7 @@ type job struct {
 	Name        string `json:"name"`
 	Cron        string `json:"cron"`
 	URI         string `json:"uri"`
-	Username    string `json:"username"`
+	User        string `json:"user"`
 	LockTimeout int    `json:"lock"`
 	Method      string `json:"method"`
 	Channel     string `json:"channel"`
