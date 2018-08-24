@@ -137,10 +137,8 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 		var password string
 
 		if data.Username != "" {
-			username = data.Username
-			if s.config.Users[username].Password != "" {
-				password = s.config.Users[username].Password
-			}
+			username = s.config.Users[data.Username].Username
+			password = s.config.Users[data.Username].Password
 		}
 
 		//Creating redis lock

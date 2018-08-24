@@ -72,7 +72,7 @@ type redisStorage struct {
 }
 
 type user struct {
-	User     string
+	Username string
 	Password string
 }
 
@@ -87,7 +87,6 @@ type job struct {
 	Cron        string `json:"cron"`
 	URI         string `json:"uri"`
 	Username    string `json:"username"`
-	Password    string `json:"password"`
 	LockTimeout int    `json:"lock"`
 	Method      string `json:"method"`
 	Channel     string `json:"channel"`
@@ -97,14 +96,14 @@ type job struct {
 
 //RunJob structure for store job parameters
 type request struct {
-	name        string //Cronjob Name
-	url         string //HTTP URL
-	method      string //TODO: Cleanup after refactoring
-	requestType string //Request type GET/POST/Publish
-	username    string //HTTP Basic Auth username
-	password    string //HTTP Basic Auth password
-	channel     string //Redis Channel
-	message     string //Redis Message
+	name        string        //Cronjob Name
+	url         string        //HTTP URL
+	method      string        //TODO: Cleanup after refactoring
+	requestType string        //Request type GET/POST/Publish
+	username    string        //HTTP Basic Auth username
+	password    string        //HTTP Basic Auth password
+	channel     string        //Redis Channel
+	message     string        //Redis Message
 	timeout     time.Duration //Request timeout
 }
 
