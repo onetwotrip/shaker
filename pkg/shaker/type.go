@@ -63,7 +63,7 @@ type config struct {
 	Watch struct {
 		Dir string `json:"dir"`
 	} `json:"watch"`
-	Users map[string]user `json:"Users"`
+	Users map[string]user `json:"users"`
 }
 
 type redisStorage struct {
@@ -72,8 +72,8 @@ type redisStorage struct {
 }
 
 type user struct {
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type jobs struct {
