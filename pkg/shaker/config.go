@@ -66,8 +66,6 @@ func (s *Shaker) validateConfigs(jobType string) bool {
 }
 
 func (s *Shaker) readConfigDirectory(dir string, jobType string) {
-	var jobs jobs
-
 	s.log.Infof("Reading directory %s", dir)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -81,6 +79,8 @@ func (s *Shaker) readConfigDirectory(dir string, jobType string) {
 		if err != nil {
 			s.Log().Fatalf("Cant't read config file %s", jobFile)
 		}
+
+		var jobs jobs
 
 		err = json.Unmarshal(configByte, &jobs)
 		if err != nil {
