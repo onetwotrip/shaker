@@ -137,7 +137,7 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 		var password string
 
 		if job.User != "" {
-			s.Log().Infof("Will use ^%s^ user for job", job.User)
+			s.Log().Infof("Will use %s user for job %s", job.User, job.Name)
 			username = s.config.Users[job.User].Username
 			password = s.config.Users[job.User].Password
 		}
