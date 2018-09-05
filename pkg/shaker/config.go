@@ -66,8 +66,6 @@ func (s *Shaker) validateConfigs(jobType string) bool {
 }
 
 func (s *Shaker) readConfigDirectory(dir string, jobType string) {
-	var jobs jobs
-
 	s.log.Infof("Reading directory %s", dir)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -81,6 +79,8 @@ func (s *Shaker) readConfigDirectory(dir string, jobType string) {
 		if err != nil {
 			s.Log().Fatalf("Cant't read config file %s", jobFile)
 		}
+
+		var jobs jobs
 
 		err = json.Unmarshal(configByte, &jobs)
 		if err != nil {
@@ -123,52 +123,52 @@ func findRedisType(method string) string {
 
 func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 
-	for _, data := range jobs.Jobs {
+	for _, job := range jobs.Jobs {
 		lockTimeout := 0
-		if data.Method != "publish" {
+		if job.Method != "publish" {
 			lockTimeout = 30
-			if data.LockTimeout > 0 {
-				lockTimeout = data.LockTimeout
+			if job.LockTimeout > 0 {
+				lockTimeout = job.LockTimeout
 			}
 		}
-		s.Log().Infof("Add job %s with lock timeout %d second from file %s", data.Name, lockTimeout, jobFile)
+		s.Log().Infof("Add job %s with lock timeout %d second from file %s", job.Name, lockTimeout, jobFile)
 
 		var username string
 		var password string
 
-		if data.Username != "" {
-			username = data.Username
-			if s.config.Users[username].Password != "" {
-				password = s.config.Users[username].Password
-			}
+		if job.User != "" {
+			s.Log().Infof("Will use %s user for job %s", job.User, job.Name)
+			username = s.config.Users[job.User].Username
+			password = s.config.Users[job.User].Password
 		}
 
 		//Creating redis lock
-		locker := lock.New(s.connectors.redisStorages["default"], getMD5Hash(urlFormater(jobs.URL, data.URI)), &lock.Options{
+		locker := lock.New(s.connectors.redisStorages["default"], getMD5Hash(urlFormater(jobs.URL, job.URI)), &lock.Options{
 			LockTimeout: time.Duration(lockTimeout) * time.Second,
 			RetryCount:  0,
 			RetryDelay:  time.Microsecond * 100})
 
 		//Creating request
 		request := &request{
-			name:        data.Name,
-			url:         urlFormater(jobs.URL, data.URI),
-			method:      findMethod(data.Method),
-			requestType: findType(data.Method),
+			name:        job.Name,
+			url:         urlFormater(jobs.URL, job.URI),
+			method:      findMethod(job.Method),
+			requestType: findType(job.Method),
 			username:    username,
 			password:    password,
-			channel:     data.Channel,
-			message:     data.Message,
+			channel:     job.Channel,
+			message:     job.Message,
+			timeout:     time.Duration(job.Timeout) * time.Second,
 		}
 
 		//Creating Clients
 		clients := &clients{
-			redisStorage: s.connectors.redisStorages[findRedisType(data.Method)],
+			redisStorage: s.connectors.redisStorages[findRedisType(job.Method)],
 			slackClient:  s.connectors.slackConfig,
 		}
 
 		//Creating Job with all parameters
-		jobrunner.Schedule(data.Cron, RunJob{
+		jobrunner.Schedule(job.Cron, RunJob{
 			log:     s.Log(),
 			lock:    locker,
 			request: *request,

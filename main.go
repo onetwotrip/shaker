@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/bamzi/jobrunner"
-	"github.com/foxdalas/shaker/pkg/shaker"
+	"github.com/onetwotrip/shaker/pkg/shaker"
 	"github.com/sirupsen/logrus"
 	"os"
 	"os/signal"
