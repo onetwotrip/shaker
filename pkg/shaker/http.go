@@ -15,7 +15,8 @@ func makeHTTP(e RunJob) {
 		"description": e.request.name,
 		"context":     "shaker",
 		"request":     e.request.url,
-		"method":      "GET",
+		"method":      e.request.method,
+		"body":        string(e.request.body),
 		"username":    e.request.username,
 	})
 
@@ -30,7 +31,7 @@ func makeHTTP(e RunJob) {
 	e.log.Debugf("Lock for job %s is created", e.request.name)
 
 	start := time.Now()
-	req, err := http.NewRequest("GET", e.request.url, nil)
+	req, err := http.NewRequest(e.request.method, e.request.url, strings.NewReader(string(e.request.body)))
 	if err != nil {
 		e.log.Error(err)
 	}
@@ -59,7 +60,8 @@ func makeHTTP(e RunJob) {
 		"response_code": resp.StatusCode,
 		"response_time": elapsed,
 		"request":       e.request.url,
-		"method":        "GET",
+		"method":        e.request.method,
+		"body":          string(e.request.body),
 		"username":      e.request.username,
 	})
 	e.log.Info(string(body))

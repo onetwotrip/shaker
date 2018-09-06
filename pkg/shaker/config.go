@@ -2,11 +2,13 @@ package shaker
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"strings"
+	"time"
+
 	"github.com/bamzi/jobrunner"
 	"github.com/bsm/redis-lock"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"time"
 )
 
 func (s *Shaker) getConfig(configFile string) {
@@ -106,9 +108,9 @@ func findType(method string) string {
 
 func findMethod(method string) string {
 	if method != "" {
-		return method
+		return strings.ToUpper(method)
 	}
-	return "get"
+	return "GET"
 }
 
 func findRedisType(method string) string {
@@ -152,6 +154,7 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 		request := &request{
 			name:        job.Name,
 			url:         urlFormater(jobs.URL, job.URI),
+			body:        job.Body,
 			method:      findMethod(job.Method),
 			requestType: findType(job.Method),
 			username:    username,
