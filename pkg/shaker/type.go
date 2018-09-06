@@ -1,6 +1,7 @@
 package shaker
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
 
@@ -83,28 +84,30 @@ type jobs struct {
 }
 
 type job struct {
-	Name        string `json:"name"`
-	Cron        string `json:"cron"`
-	URI         string `json:"uri"`
-	User        string `json:"user"`
-	LockTimeout int    `json:"lock"`
-	Method      string `json:"method"`
-	Channel     string `json:"channel"`
-	Message     string `json:"message"`
-	Timeout     int    `json:"timeout"`
+	Name        string          `json:"name"`
+	Cron        string          `json:"cron"`
+	URI         string          `json:"uri"`
+	User        string          `json:"user"`
+	LockTimeout int             `json:"lock"`
+	Body        json.RawMessage `json:"body"`
+	Method      string          `json:"method"`
+	Channel     string          `json:"channel"`
+	Message     string          `json:"message"`
+	Timeout     int             `json:"timeout"`
 }
 
 //RunJob structure for store job parameters
 type request struct {
-	name        string        //Cronjob Name
-	url         string        //HTTP URL
-	method      string        //TODO: Cleanup after refactoring
-	requestType string        //Request type GET/POST/Publish
-	username    string        //HTTP Basic Auth username
-	password    string        //HTTP Basic Auth password
-	channel     string        //Redis Channel
-	message     string        //Redis Message
-	timeout     time.Duration //Request timeout
+	name        string          //Cronjob Name
+	url         string          //HTTP URL
+	body        json.RawMessage //HTTP request body
+	method      string          //TODO: Cleanup after refactoring
+	requestType string          //Request type GET/POST/Publish
+	username    string          //HTTP Basic Auth username
+	password    string          //HTTP Basic Auth password
+	channel     string          //Redis Channel
+	message     string          //Redis Message
+	timeout     time.Duration   //Request timeout
 }
 
 type clients struct {
