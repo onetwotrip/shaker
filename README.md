@@ -61,8 +61,8 @@ users:
              "cron": "0 0 1 * * *",
              "uri": "api/myMethod4",
              "username": "user1",
-             "http_method": "post",
-             "http_body": {}, // json.RawMessage that allowas {} or []
+             "method": "post",
+             "body": {}, // json.RawMessage that allowas {} or []
          }
     ]
 }
