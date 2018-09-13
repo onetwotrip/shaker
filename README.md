@@ -60,7 +60,7 @@ users:
              "name": "Every day in 1 hour with user user1",
              "cron": "0 0 1 * * *",
              "uri": "api/myMethod4",
-             "username": "user1",
+             "user": "user1",
              "method": "post",
              "body": {}, // json.RawMessage that allowas {} or []
          }
