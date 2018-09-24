@@ -116,7 +116,7 @@ func findMethod(method string) string {
 func findRedisType(method string) string {
 	if findType(method) == "redis" {
 		switch findMethod(method) {
-		case "publish":
+		case "PUBLISH":
 			return "pubsub"
 		}
 	}
