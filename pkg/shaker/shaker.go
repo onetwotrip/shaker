@@ -44,7 +44,7 @@ func (s *Shaker) Init() {
 
 func (s *Shaker) params() error {
 	if os.Getenv("CONFIG") == "" {
-		return errors.New("Please provide the secret key via environment variable CONFIG")
+		return errors.New("please provide the secret key via environment variable CONFIG")
 	}
 	s.getConfig(os.Getenv("CONFIG"))
 

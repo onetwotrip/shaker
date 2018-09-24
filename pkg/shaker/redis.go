@@ -34,7 +34,7 @@ func makeRedis(e RunJob) {
 		"type":        "redis",
 	})
 
-	if e.request.method == "publish" {
+	if e.request.method == "PUBLISH" {
 		client := e.clients.redisStorage
 		err := client.Publish(e.request.channel, e.request.message).Err()
 		if err != nil {
