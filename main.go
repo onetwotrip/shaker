@@ -5,8 +5,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"shaker/pkg/shaker"
+
 	"github.com/bamzi/jobrunner"
-	"github.com/onetwotrip/shaker/pkg/shaker"
 	"github.com/sirupsen/logrus"
 )
 
