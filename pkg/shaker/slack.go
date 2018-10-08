@@ -36,9 +36,9 @@ func slackSendMessage(slackConfig slackConfig, name string, text string, color s
 		log.Error(err)
 	}
 
-	params := slack.PostMessageParameters{
-		AsUser: true,
-	}
+//	params := slack.PostMessageParameters{
+//		AsUser: true,
+//	}
 	attachment := slack.Attachment{
 		Color: color,
 		Fields: []slack.AttachmentField{
@@ -75,8 +75,8 @@ func slackSendMessage(slackConfig slackConfig, name string, text string, color s
 		)
 	}
 
-	params.Attachments = []slack.Attachment{attachment}
-	_, _, err = slackConfig.client.PostMessage(slackConfig.channel, "", params)
+//	params.Attachments = []slack.Attachment{attachment}
+	_, _, err = slackConfig.client.PostMessage(slackConfig.channel, slack.MsgOptionText("", false), slack.MsgOptionAttachments(attachment))
 	if err != nil {
 		log.Error(err)
 	}
