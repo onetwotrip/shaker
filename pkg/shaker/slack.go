@@ -33,12 +33,9 @@ func slackSendMessage(slackConfig slackConfig, name string, text string, color s
 
 	hostname, err := os.Hostname()
 	if err != nil {
-		log.Error(err)
+		log.Errorf("can't get hostname: %s", err)
 	}
 
-	params := slack.PostMessageParameters{
-		AsUser: true,
-	}
 	attachment := slack.Attachment{
 		Color: color,
 		Fields: []slack.AttachmentField{
@@ -75,10 +72,9 @@ func slackSendMessage(slackConfig slackConfig, name string, text string, color s
 		)
 	}
 
-	params.Attachments = []slack.Attachment{attachment}
-	_, _, err = slackConfig.client.PostMessage(slackConfig.channel, slack.MsgOptionText("", false), slack.MsgOptionPostMessageParameters(params))
+	_, _, err = slackConfig.client.PostMessage(slackConfig.channel, slack.MsgOptionText("shaker info", false), slack.MsgOptionAsUser(true), slack.MsgOptionAttachments(attachment))
 	if err != nil {
-		log.Error(err)
+		log.Errorf("can't send slack message: %s", err)
 	}
 }
 
