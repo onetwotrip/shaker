@@ -67,7 +67,11 @@ func makeHTTP(e RunJob) {
 	e.log.Info(string(body))
 
 	checkResponseStatusCode(e, resp.StatusCode, elapsed)
-	checkResponseBody(e, string(body), elapsed)
+
+	respContentType := resp.Header.Get("Content-Type")
+	if strings.Contains(respContentType, "application/json") {
+		checkResponseBody(e, string(body), elapsed)
+	}
 }
 
 func checkResponseStatusCode(e RunJob, code int, elapsed float64) {
