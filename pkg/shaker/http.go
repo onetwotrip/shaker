@@ -69,7 +69,7 @@ func makeHTTP(e RunJob) {
 	checkResponseStatusCode(e, resp.StatusCode, elapsed)
 
 	respContentType := resp.Header.Get("Content-Type")
-	if strings.Contains(respContentType, "application/json") {
+	if !strings.Contains(respContentType, "application/json") {
 		checkResponseBody(e, string(body), elapsed)
 	}
 }
