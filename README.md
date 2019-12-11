@@ -67,3 +67,11 @@ users:
     ]
 }
 ```
+
+# Build
+
+go build -mod vendor
+
+# For run
+
+export CONFIG="dev/config.yml"
