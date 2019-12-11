@@ -9,20 +9,18 @@ install: true
 env: GO111MODULE=on
 script:
   - go build -mod vendor
-  - touch shaker_$TRAVIS_TAG_linux-amd64.tar.gz
-  - mkdir shaker_$TRAVIS_TAG_linux-amd64
-  - mv shaker shaker_$TRAVIS_TAG_linux-amd64/
-  - tar -czf shaker_$TRAVIS_TAG_linux-amd64.tar.gz --exclude='./.*' --exclude=shaker_$TRAVIS_TAG_linux-amd64.tar.gz shaker_$TRAVIS_TAG_linux-amd64
+  - touch shaker_${TRAVIS_TAG}_linux-amd64.tar.gz
+  - mkdir shaker_${TRAVIS_TAG}_linux-amd64
+  - mv shaker shaker_${TRAVIS_TAG}_linux-amd64/
+  - tar -czf shaker_${TRAVIS_TAG}_linux-amd64.tar.gz --exclude='./.*' --exclude=shaker_${TRAVIS_TAG}_linux-amd64.tar.gz shaker_${TRAVIS_TAG}_linux-amd64
 git:
   depth: 1
 deploy:
   provider: releases
+  api_key: $GITHUB_TOKEN
+  file: "shaker_${TRAVIS_TAG}_linux-amd64.tar.gz"
   skip_cleanup: true
-  api_key:
-    secure: $GITHUB_TOKEN
-  file: "shaker_$TRAVIS_TAG_linux-amd64.tar.gz"
   on:
-    # Only build binaries for tagged commits
     tags: true
 
 # # use the latest ubuntu environment (18.04) available on travis
