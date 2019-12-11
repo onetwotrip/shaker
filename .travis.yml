@@ -6,8 +6,13 @@ os:
 dist: bionic
 sudo: false
 install: true
+env: GO111MODULE=on
 script:
-  - env GO111MODULE=on GOFLAGS='-mod vendor' go build
+  - go build -mod vendor
+git:
+  depth: 1
+
+
 # # use the latest ubuntu environment (18.04) available on travis
 # dist: bionic
 
