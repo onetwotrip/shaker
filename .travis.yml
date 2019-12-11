@@ -11,7 +11,16 @@ script:
   - go build -mod vendor
 git:
   depth: 1
-
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: $GITHUB_TOKEN
+  file:
+    - shaker
+  on:
+    # Only build binaries for tagged commits
+    tags: true
 
 # # use the latest ubuntu environment (18.04) available on travis
 # dist: bionic
