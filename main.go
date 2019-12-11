@@ -6,8 +6,8 @@ import (
 	"syscall"
 
 	"github.com/bamzi/jobrunner"
-	"github.com/onetwotrip/shaker/pkg/shaker"
 	"github.com/sirupsen/logrus"
+	"shaker/pkg/shaker"
 )
 
 var AppVersion = ""
