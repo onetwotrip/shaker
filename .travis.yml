@@ -20,8 +20,7 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: $GITHUB_TOKEN
-  file:
-    - shaker
+  file: "shaker_$TRAVIS_TAG_linux-amd64.tar.gz"
   on:
     # Only build binaries for tagged commits
     tags: true
