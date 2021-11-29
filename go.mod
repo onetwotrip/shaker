@@ -5,7 +5,7 @@ require (
 	github.com/bsm/redis-lock v8.0.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-redis/redis v6.14.2+incompatible
-	github.com/gorilla/websocket v1.4.0 // indirect
+	github.com/gorilla/websocket v1.4.1 // indirect
 	github.com/lusis/go-slackbot v0.0.0-20180109053408-401027ccfef5 // indirect
 	github.com/lusis/slack-test v0.0.0-20180109053238-3c758769bfa6 // indirect
 	github.com/nlopes/slack v0.4.1-0.20181123205743-38ac5e8c495b
