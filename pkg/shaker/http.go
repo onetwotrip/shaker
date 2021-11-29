@@ -38,10 +38,10 @@ func makeHTTP(e RunJob) {
 	if e.request.username != "" || e.request.password != "" {
 		req.SetBasicAuth(e.request.username, e.request.password)
 	}
+	req.Header.Set("User-Agent", "OTT/shaker")
 	cli := &http.Client{
 		Timeout: e.request.timeout,
 	}
-	req.Header.Set("User-Agent", "OTT/shaker")
 	resp, err := cli.Do(req)
 	if err != nil {
 		e.log.Error(err)
