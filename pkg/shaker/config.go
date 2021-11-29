@@ -2,6 +2,7 @@ package shaker
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"strings"
 	"time"
@@ -13,10 +14,10 @@ import (
 
 func (s *Shaker) getConfig(configFile string) {
 	log := MakeLog()
-	s.Log().Infof("Reading configuration from %s", configFile)
+	s.Log().Infof("reading configuration from %s", configFile)
 	config, err := ioutil.ReadFile(configFile)
 	if err != nil {
-		log.Fatalf("Cant't read config file %s", configFile)
+		log.Fatalf("cant't read config file %s", configFile)
 	}
 	err = yaml.Unmarshal(config, &s.config)
 	if err != nil {
@@ -42,18 +43,25 @@ func (s *Shaker) validateConfigs(jobType string) bool {
 		dir = s.config.Jobs.Redis.Dir
 	}
 
-	s.log.Infof("Reading directory %s", dir)
+	s.log.Infof("reading directory %s", dir)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return false
 	}
 
 	for _, file := range files {
+		if strings.HasPrefix(file.Name(), ".") {
+			s.Log().Warnf("skip file %s due prefix '.'", file.Name())
+			continue
+		}
+		if !strings.HasSuffix(file.Name(), ".json"){
+			s.Log().Warnf("DEPRECATED: configs without .json extension will be skipped in future: '%s'", file.Name())
+		}
 		jobFile := dir + "/" + file.Name()
-		s.Log().Infof("Reading file for %s jobs %s", jobType, jobFile)
+		s.Log().Infof("reading file for %s jobs %s", jobType, jobFile)
 		configByte, err := ioutil.ReadFile(jobFile)
 		if err != nil {
-			s.Log().Fatalf("Cant't read config file %s", jobFile)
+			s.Log().Fatalf("cant't read config file %s", jobFile)
 			return false
 		}
 
@@ -68,7 +76,7 @@ func (s *Shaker) validateConfigs(jobType string) bool {
 }
 
 func (s *Shaker) readConfigDirectory(dir string, jobType string) {
-	s.log.Infof("Reading directory %s", dir)
+	s.log.Infof("reading directory %s", dir)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		s.log.Fatal(err)
@@ -76,10 +84,17 @@ func (s *Shaker) readConfigDirectory(dir string, jobType string) {
 	}
 
 	for _, file := range files {
+		if strings.HasPrefix(file.Name(), ".") {
+			s.Log().Warnf("skip file %s due prefix '.'", file.Name())
+			continue
+		}
+		if !strings.HasSuffix(file.Name(), ".json"){
+			s.Log().Warnf("DEPRECATED: configs without .json extension will be skipped in future (%s)", file.Name())
+		}
 		jobFile := dir + "/" + file.Name()
 		configByte, err := ioutil.ReadFile(jobFile)
 		if err != nil {
-			s.Log().Fatalf("Cant't read config file %s", jobFile)
+			s.Log().Fatalf("cant't read config file %s", jobFile)
 		}
 
 		var jobs jobs
@@ -133,13 +148,13 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 				lockTimeout = job.LockTimeout
 			}
 		}
-		s.Log().Infof("Add job %s with lock timeout %d second from file %s", job.Name, lockTimeout, jobFile)
+		s.Log().Infof("schedule job %s with lock timeout %d second from file %s", job.Name, lockTimeout, jobFile)
 
 		var username string
 		var password string
 
 		if job.User != "" {
-			s.Log().Infof("Will use %s user for job %s", job.User, job.Name)
+			s.Log().Infof("will use %s user for job %s", job.User, job.Name)
 			username = s.config.Users[job.User].Username
 			password = s.config.Users[job.User].Password
 		}
@@ -171,11 +186,20 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 		}
 
 		//Creating Job with all parameters
-		jobrunner.Schedule(job.Cron, RunJob{
+		err := jobrunner.Schedule(job.Cron, RunJob{
 			log:     s.Log(),
 			lock:    locker,
 			request: *request,
 			clients: clients,
 		})
+		s.Log().Debugf("jobrunner.Schedule result for '%s' is '%s'", job.Name, err)
+
+		if err == nil {
+			s.Log().Infof("success schedule for '%s'", job.Name)
+		} else {
+			message := fmt.Sprintf("can't schedule job '%s' from '%s', due: '%s'", job.Name, jobFile, err)
+			s.Log().Error(message)
+			slackSendErrorMessage(s.connectors.slackConfig, "shaker config", message, "", 0)
+		}
 	}
 }

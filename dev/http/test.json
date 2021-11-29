@@ -3,7 +3,7 @@
   "jobs": [
     {
       "name": "Every minute in 0 second",
-      "cron": "0 * * * *",
+      "cron": "99 * * * * *",
       "uri": "api/myMethod1"
     },
     {
