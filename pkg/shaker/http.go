@@ -41,6 +41,7 @@ func makeHTTP(e RunJob) {
 	cli := &http.Client{
 		Timeout: e.request.timeout,
 	}
+	req.Header.Set("User-Agent", "OTT/shaker")
 	resp, err := cli.Do(req)
 	if err != nil {
 		e.log.Error(err)
