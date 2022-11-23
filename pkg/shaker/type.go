@@ -94,6 +94,8 @@ type job struct {
 	Channel     string          `json:"channel"`
 	Message     string          `json:"message"`
 	Timeout     int             `json:"timeout"`
+	ContentType string			`json:"contentType"`
+	UserAgent	string			`json:"userAgent"`
 }
 
 //RunJob structure for store job parameters
@@ -108,6 +110,8 @@ type request struct {
 	channel     string          //Redis Channel
 	message     string          //Redis Message
 	timeout     time.Duration   //Request timeout
+	contentType string			//Content type
+	userAgent	string			//User agent
 }
 
 type clients struct {

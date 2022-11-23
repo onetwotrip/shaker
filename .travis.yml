@@ -8,6 +8,9 @@ sudo: false
 install: true
 env: GO111MODULE=on
 script:
+  - go mod init shaker
+  - go mod tidy
+  - go mod vendor
   - go build -mod vendor
   - touch shaker_${TRAVIS_TAG}_linux-amd64.tar.gz
   - mkdir shaker_${TRAVIS_TAG}_linux-amd64
