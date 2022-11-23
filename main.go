@@ -5,9 +5,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"shaker/pkg/shaker"
+
 	"github.com/bamzi/jobrunner"
 	"github.com/sirupsen/logrus"
-	"shaker/pkg/shaker"
 )
 
 var AppVersion = ""

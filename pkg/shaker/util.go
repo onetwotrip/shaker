@@ -3,11 +3,12 @@ package shaker
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/go-redis/redis"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/go-redis/redis"
+	log "github.com/sirupsen/logrus"
 )
 
 //MakeLog Create logging with fields

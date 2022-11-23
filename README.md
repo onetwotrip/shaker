@@ -70,7 +70,7 @@ users:
 
 # Build
 
-go build -mod vendor
+go build 
 
 # For run
 
