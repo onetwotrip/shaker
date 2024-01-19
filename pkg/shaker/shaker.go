@@ -2,11 +2,12 @@ package shaker
 
 import (
 	"errors"
+	"os"
+	shaker "shaker/pkg/shaker_const"
+	"sync"
+
 	"github.com/fsnotify/fsnotify"
 	log "github.com/sirupsen/logrus"
-	"os"
-	"shaker/pkg/shaker_const"
-	"sync"
 )
 
 var _ shaker.Shaker = &Shaker{}
@@ -77,7 +78,6 @@ func (s *Shaker) watchJobs() {
 		for {
 			select {
 			case event := <-watcher.Events:
-				s.Log().Infof("event:", event.String())
 				if event.Op&fsnotify.Create == fsnotify.Create {
 					s.getCronList()
 					slackSendInfoMessage(s.connectors.slackConfig, "Configuration", "Apply", "", 0)

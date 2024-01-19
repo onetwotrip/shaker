@@ -18,6 +18,8 @@ func makeHTTP(e RunJob) {
 		"method":      e.request.method,
 		"body":        string(e.request.body),
 		"username":    e.request.username,
+		"userAgent":   e.request.userAgent,
+		"contentType": e.request.contentType,
 	})
 
 	ok, err := e.lock.Lock()
@@ -38,7 +40,14 @@ func makeHTTP(e RunJob) {
 	if e.request.username != "" || e.request.password != "" {
 		req.SetBasicAuth(e.request.username, e.request.password)
 	}
-	req.Header.Set("User-Agent", "OTT/shaker")
+	if e.request.userAgent != "" {
+		req.Header.Set("User-Agent", e.request.userAgent)
+	} else {
+		req.Header.Set("User-Agent", "OTT/shaker")
+	}
+	if e.request.contentType != "" && e.request.method == "post" {
+		req.Header.Set("Content-Type", e.request.contentType)
+	}
 	cli := &http.Client{
 		Timeout: e.request.timeout,
 	}

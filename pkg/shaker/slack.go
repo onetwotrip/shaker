@@ -2,9 +2,10 @@ package shaker
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/nlopes/slack"
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 func (s *Shaker) isSlackEnabled() bool {

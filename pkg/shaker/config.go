@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/bamzi/jobrunner"
-	"github.com/bsm/redis-lock"
+	lock "github.com/bsm/redis-lock"
 	"gopkg.in/yaml.v2"
 )
 
@@ -162,6 +162,8 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 			channel:     job.Channel,
 			message:     job.Message,
 			timeout:     time.Duration(job.Timeout) * time.Second,
+			contentType: job.ContentType,
+			userAgent:   job.UserAgent,
 		}
 
 		//Creating Clients
@@ -171,11 +173,14 @@ func (s *Shaker) loadJobs(jobs jobs, jobFile string) {
 		}
 
 		//Creating Job with all parameters
-		jobrunner.Schedule(job.Cron, RunJob{
+		err := jobrunner.Schedule(job.Cron, RunJob{
 			log:     s.Log(),
 			lock:    locker,
 			request: *request,
 			clients: clients,
 		})
+		if err != nil {
+			return
+		}
 	}
 }

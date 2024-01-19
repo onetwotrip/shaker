@@ -1,0 +1,40 @@
+name: Go
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.18
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Build
+      run: go build 
+
+    - name: Prepare files for release
+      run: |
+        touch shaker_${GITHUB_REF##*/}_linux-amd64.tar.gz
+        mkdir shaker_${GITHUB_REF##*/}_linux-amd64
+        mv shaker shaker_${GITHUB_REF##*/}_linux-amd64/
+        tar -czf shaker_${GITHUB_REF##*/}_linux-amd64.tar.gz --exclude='./.*' --exclude=shaker_${GITHUB_REF##*/}_linux-amd64.tar.gz shaker_${GITHUB_REF##*/}_linux-amd64
+
+    - uses: ncipollo/release-action@v1.13.0
+      with:
+        name: Shaker_release_${GITHUB_REF##*/}
+        artifacts: "shaker_${GITHUB_REF##*/}_linux-amd64.tar.gz"
+        token: ${{ secrets.GITHUB_TOKEN }}

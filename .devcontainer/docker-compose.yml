@@ -1,0 +1,26 @@
+version: '3.3'
+
+volumes:
+  redis-data:
+
+services:
+  shaker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # env_file:
+    #   - .env
+    
+    command: sleep infinity
+
+    volumes:
+      - ..:/home/vscode/workspaces/shaker
+    
+  db:
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis-data:/var/lib/postgresql/data
+    # env_file:
+    #   - .env

@@ -1,0 +1,26 @@
+{
+	"name": "OTT Shaker",
+	"dockerComposeFile": "docker-compose.yml",
+	"initializeCommand": "ls",
+	"service": "shaker",
+	"workspaceFolder": "/home/vscode/workspaces/${localWorkspaceFolderBasename}",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go",
+				"mhutchie.git-graph",
+				"GitHub.copilot",
+				"ZainChen.json",
+				"esbenp.prettier-vscode"
+			],
+			"settings": {
+				"go.useLanguageServer": true,
+				"go.gopath": "/go",
+        "go.goroot": "/usr/local/go"
+			}
+		}
+	},
+
+	"postCreateCommand": "go mod tidy"
+}
