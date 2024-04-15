@@ -40,30 +40,32 @@ users:
 {
     "url": "http:/localhost",
     "jobs": [
-        {
-            "name": "Every minute in 0 second",
-            "cron": "0 * * * *",
-            "uri": "api/myMethod1"
-         },
-         {
-             "name": "Every minute in 0 second 2 with 10 second timeout",
-             "cron": "0 */1 * * * *",
-             "uri": "api/myMethod2",
-             "timeout": 10
-         },
-         {
-             "name": "Every 4 minutes in 0 second",
-             "cron": "0 */4 * * * *",
-             "uri": "api/myMethod3"
-         },
-         {
-             "name": "Every day in 1 hour with user user1",
-             "cron": "0 0 1 * * *",
-             "uri": "api/myMethod4",
-             "user": "user1",
-             "method": "post",
-             "body": {}, // json.RawMessage that allowas {} or []
-         }
+      {
+        "name": "Every minute in 0 second",
+        "cron": "0 * * * *",
+        "uri": "api/myMethod1"
+      },
+      {
+        "name": "Every minute in 0 second 2 with 10 second timeout",
+        "cron": "0 */1 * * *",
+        "uri": "api/myMethod2",
+        "timeout": 10
+      },
+      {
+        "name": "Every 4 minutes in 0 second",
+        "cron": "0 */4 * * *",
+        "uri": "api/myMethod3"
+      },
+      {
+        "name": "Every day in 1 hour with user user1, method post, content-type header",
+        "cron": "0 0 1 * *",
+        "uri": "api/myMethod4",
+        "user": "user1",
+        "method": "post",
+        "body": {},
+        "contentType": "application/json",
+        "userAgent": "test-user"
+      }
     ]
 }
 ```
