@@ -1,12 +1,12 @@
 {
-    "redis": "pubsub",
-    "jobs": [
-        {
-            "name": "Redis PubSub Pinger",
-            "method": "publish",
-            "channel": "slack is false",
-            "message": "{\"name\": \"PING\"}",
-            "cron": "* * * * *"
-        }
-    ]
+  "redis": "pubsub",
+  "jobs": [
+    {
+      "name": "Every minute Redis PubSub Pinger",
+      "method": "publish",
+      "channel": "slack is false",
+      "message": "{\"name\": \"PING\"}",
+      "cron": "* * * * *"
+    }
+  ]
 }

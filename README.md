@@ -41,24 +41,24 @@ users:
     "url": "http:/localhost",
     "jobs": [
       {
-        "name": "Every minute in 0 second",
-        "cron": "0 * * * *",
+        "name": "Every minute",
+        "cron": "* * * * *",
         "uri": "api/myMethod1"
       },
       {
-        "name": "Every minute in 0 second 2 with 10 second timeout",
-        "cron": "0 */1 * * *",
+        "name": "Every minute with 10 second timeout",
+        "cron": "* * * * *",
         "uri": "api/myMethod2",
         "timeout": 10
       },
       {
-        "name": "Every 4 minutes in 0 second",
-        "cron": "0 */4 * * *",
+        "name": "Every 4 minutes",
+        "cron": "*/4 * * * *",
         "uri": "api/myMethod3"
       },
       {
-        "name": "Every day in 1 hour with user user1, method post, content-type header",
-        "cron": "0 0 1 * *",
+        "name": "Every day at 1 hour 0 minutes with user user1, method post, content-type header",
+        "cron": "0 1 * * *",
         "uri": "api/myMethod4",
         "user": "user1",
         "method": "post",
